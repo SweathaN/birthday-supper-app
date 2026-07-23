@@ -1,29 +1,32 @@
 window.PB_TIMELINE = [
-  // Wed Night
+  // Fri Morning (passive soaks)
+  { stepId: "global-morning-soaks", courseId: "none" },
+  // Fri 1:45 PM — kickoff
   { stepId: "procurement-check", courseId: "none" },
+  // Fri 2:00–4:00 PM (Block 1: active prep)
   { stepId: "c5-avial-crema", courseId: "c5" },
   { stepId: "c5-pumpkin-mash", courseId: "c5" },
-  // Thu Night
-  { stepId: "c2-fill-cook", courseId: "c2" },
-  { stepId: "c4-paste", courseId: "c4" },
   { stepId: "c6-dome", courseId: "c6" },
+  { stepId: "c4-paste", courseId: "c4" },
+  { stepId: "c6-filling", courseId: "c6" },
+  // Fri 4:00–5:00 PM — BREAK
+  // Fri 5:00 PM+ (Block 2: evening prep)
+  { stepId: "global-labels", courseId: "none" },
   { stepId: "c6-gel", courseId: "c6" },
   { stepId: "c6-tuile", courseId: "c6" },
-  { stepId: "c6-filling", courseId: "c6" },
-  // Fri Night
-  { stepId: "global-labels", courseId: "none" },
+  { stepId: "c3-rasam-reduce", courseId: "c3" },
+  { stepId: "c3-podimas", courseId: "c3" },
+  { stepId: "c2-fill-cook", courseId: "c2" },
+  { stepId: "c5-adai-parbake", courseId: "c5" },
+  { stepId: "c2-fill-portion", courseId: "c2" },
   { stepId: "c1-puree-cook", courseId: "c1" },
   { stepId: "c1-puree-blend", courseId: "c1" },
   { stepId: "c1-dressing-temper", courseId: "c1" },
+  { stepId: "c6-crumb", courseId: "c6" },
   { stepId: "c1-seeds-toast", courseId: "c1" },
   { stepId: "c1-tuile-stage", courseId: "c1" },
   { stepId: "c1-micro-coriander-stage", courseId: "c1" },
-  { stepId: "c2-fill-portion", courseId: "c2" },
-  { stepId: "c3-podimas", courseId: "c3" },
-  { stepId: "c3-rasam-reduce", courseId: "c3" },
-  { stepId: "c5-adai-parbake", courseId: "c5" },
   { stepId: "c6-candy", courseId: "c6" },
-  { stepId: "c6-crumb", courseId: "c6" },
   { stepId: "drink-base", courseId: "drink" },
   // Sat Morning-Afternoon
   { stepId: "c4-paneer-cut", courseId: "c4" },

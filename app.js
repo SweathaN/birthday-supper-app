@@ -451,7 +451,8 @@ function renderMeta() {
     ["serviceStart", `<strong>Service Start:</strong> <span${editAttr("meta.serviceStart")}>${m.serviceStart}</span>`],
     ["arrival", `<strong>Arrival:</strong> <span${editAttr("meta.arrival")}>${m.arrival}</span>`],
     ["saturdayStart", `<strong>Saturday Start:</strong> <span${editAttr("meta.saturdayStart")}>${m.saturdayStart}</span>`],
-    ["kozhukattai", `<strong>Kozhukattai:</strong> <span${editAttr("meta.kozhukattai")}>${m.kozhukattai}</span>`]
+    ["kozhukattai", `<strong>Kozhukattai:</strong> <span${editAttr("meta.kozhukattai")}>${m.kozhukattai}</span>`],
+    ["prepPlan", `<strong>Prep Plan:</strong> <span${editAttr("meta.prepPlan")}>${m.prepPlan || ""}</span>`]
   ];
   meta.innerHTML = "";
   entries.forEach(([, t]) => meta.appendChild(el("div", "pill", t)));
