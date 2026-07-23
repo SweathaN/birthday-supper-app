@@ -489,15 +489,19 @@ function renderLegend(courseMap) {
 function renderMasterIngredientsTop() {
   const wrap = byId("master-ingredients-top");
   wrap.innerHTML = "";
+  const state = getSyncState();
 
   getMergedCourses().forEach(course => {
     const sec = el("section", `ing-course ${course.className}`);
     const heading = el("h3", course.textClass, `${course.label} - ${course.name}`);
-    const ul = el("ul");
+    const ul = el("ul", "ing-checklist");
 
-    course.components.forEach(component => {
-      component.ingredients.forEach(ingredient => {
-        const li = el("li", course.textClass, `${component.name}: ${ingredient}`);
+    course.components.forEach((component, ci) => {
+      component.ingredients.forEach((ingredient, ii) => {
+        const key = `ing-${course.id}-${ci}-${ii}`;
+        const checked = state[key] ? "checked" : "";
+        const li = el("li", course.textClass);
+        li.innerHTML = `<label><input type="checkbox" data-sync="${key}" ${checked}> <span><em>${component.name}:</em> ${ingredient}</span></label>`;
         ul.appendChild(li);
       });
     });
@@ -739,9 +743,14 @@ function buildRecipePopupHtml(course) {
   const editMode = isEditMode();
   const cid = course.id;
 
-  const ingredientsByComponent = course.components.map(component => {
-    const items = component.ingredients.map(ingredient => `<li>${ingredient}</li>`).join("");
-    return `<h4>${component.name}</h4><ul>${items}</ul>`;
+  const state = getSyncState();
+  const ingredientsByComponent = course.components.map((component, ci) => {
+    const items = component.ingredients.map((ingredient, ii) => {
+      const key = `ing-${course.id}-${ci}-${ii}`;
+      const checked = state[key] ? "checked" : "";
+      return `<li class="ing-check-row"><label><input type="checkbox" data-sync="${key}" ${checked}> <span>${ingredient}</span></label></li>`;
+    }).join("");
+    return `<h4>${component.name}</h4><ul class="ing-checklist">${items}</ul>`;
   }).join("");
 
   const stepsSections = (course.steps || []).map(step => {

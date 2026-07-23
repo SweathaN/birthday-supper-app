@@ -23,9 +23,9 @@ window.PB_TIMELINE = [
   { stepId: "c3-rasam-reduce", courseId: "c3" },
   { stepId: "c5-adai-parbake", courseId: "c5" },
   { stepId: "c6-candy", courseId: "c6" },
+  { stepId: "c6-crumb", courseId: "c6" },
   { stepId: "drink-base", courseId: "drink" },
   // Sat Morning-Afternoon
-  { stepId: "c3-spheres-build", courseId: "c3" },
   { stepId: "c4-paneer-cut", courseId: "c4" },
   { stepId: "combined-crystal-dough", courseId: "combined" },
   { stepId: "c1-topping-prep", courseId: "c1" },
@@ -36,6 +36,7 @@ window.PB_TIMELINE = [
   { stepId: "c6-mint", courseId: "c6" },
   { stepId: "c2-shape", courseId: "c2" },
   // Sat Evening
+  { stepId: "c3-rice-dal-cook", courseId: "c3" },
   { stepId: "c3-reheat", courseId: "c3" },
   { stepId: "global-self-ready", courseId: "none" },
   { stepId: "drink-send", courseId: "drink" },
@@ -44,7 +45,6 @@ window.PB_TIMELINE = [
   { stepId: "c1-send", courseId: "c1" },
   { stepId: "c2-steam", courseId: "c2" },
   { stepId: "c2-send", courseId: "c2" },
-  { stepId: "c3-bake", courseId: "c3" },
   { stepId: "c3-pour-send", courseId: "c3" },
   { stepId: "c4-steam-start", courseId: "c4" },
   { stepId: "c4-send", courseId: "c4" },

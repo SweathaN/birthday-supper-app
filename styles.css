@@ -138,6 +138,37 @@ h3 { margin: 0 0 8px; font-size: 17px; }
   font-size: 13px;
 }
 
+/* Ingredient checklist rows (checkbox against each ingredient) */
+.ing-checklist {
+  list-style: none;
+  padding-left: 4px;
+}
+.ing-checklist li {
+  margin: 6px 0;
+}
+.ing-checklist label {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  cursor: pointer;
+  line-height: 1.35;
+}
+.ing-checklist input[type="checkbox"] {
+  margin-top: 3px;
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+}
+.ing-checklist input[type="checkbox"]:checked + span {
+  text-decoration: line-through;
+  opacity: 0.55;
+}
+.ing-check-row em {
+  font-style: normal;
+  font-weight: 600;
+  opacity: 0.75;
+}
+
 .recipe-content {
   padding: 10px 12px 14px;
 }
