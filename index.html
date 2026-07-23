@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Birthday Supper Club App</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="wrap" id="top">
+    <div class="toolbar" id="toolbar">
+      <button type="button" class="tool-btn" id="toolbar-edit">&#9998; Edit</button>
+      <button type="button" class="tool-btn" id="toolbar-sync">&#11014; Sync</button>
+      <span class="dirty-pill" id="dirty-pill" style="display:none"></span>
+      <div class="toolbar-menu-wrap">
+        <button type="button" class="tool-btn" id="toolbar-more" aria-label="More options">&#8943;</button>
+        <div class="toolbar-menu" id="toolbar-menu" style="display:none">
+          <button type="button" id="reset-overrides-btn">&#128465; Reset all overrides</button>
+        </div>
+      </div>
+    </div>
+
+    <h1>Birthday Supper Club Playbook</h1>
+    <p class="sub">Data-driven app with split sources. Update data files and all sections auto-refresh.</p>
+
+    <section class="page top-layout" id="overview-page">
+      <div>
+        <div class="meta" id="meta"></div>
+        <div class="legend" id="legend"></div>
+        <div class="tools-row">
+          <button type="button" class="popup-btn" id="open-ingredients">View Master Ingredients</button>
+        </div>
+        <div class="quick-links" id="quick-links"></div>
+      </div>
+      <aside class="card">
+        <h2>Quick Notes</h2>
+        <p class="sub">Ingredients are now in a popup to keep the main page cleaner during service.</p>
+      </aside>
+    </section>
+
+    <dialog id="ingredients-dialog" class="ingredients-dialog">
+      <div class="dialog-head">
+        <h2>Master Ingredients</h2>
+        <button type="button" id="close-ingredients" class="popup-btn">Close</button>
+      </div>
+      <div id="master-ingredients-top"></div>
+    </dialog>
+
+    <dialog id="recipe-dialog" class="recipe-dialog">
+      <div class="dialog-head">
+        <h2 id="recipe-title">Recipe</h2>
+        <button type="button" id="close-recipe" class="popup-btn">Close</button>
+      </div>
+      <div id="recipe-content" class="recipe-content"></div>
+    </dialog>
+
+    <dialog id="step-dialog" class="recipe-dialog">
+      <div class="dialog-head">
+        <h2 id="step-title">Prep Step</h2>
+        <button type="button" id="close-step" class="popup-btn">Close</button>
+      </div>
+      <div id="step-content" class="recipe-content"></div>
+    </dialog>
+
+    <section class="page" id="timeline-page">
+      <div class="page-head">
+        <h2>Timeline (Tick Live)</h2>
+        <a href="#top" class="back">Back To Top</a>
+      </div>
+      <div class="timeline-controls card">
+        <label for="timeline-sort">Sort</label>
+        <select id="timeline-sort">
+          <option value="schedule-asc">Time: Earliest First</option>
+          <option value="schedule-desc">Time: Latest First</option>
+        </select>
+        <label for="timeline-course-filter">Course</label>
+        <select id="timeline-course-filter"></select>
+      </div>
+      <table id="timeline-table"></table>
+    </section>
+
+    <section class="page" id="checklist-page">
+      <div class="page-head">
+        <h2>Prep Checklist</h2>
+        <a href="#top" class="back">Back To Top</a>
+      </div>
+      <div class="grid" id="checklist-grid"></div>
+      <div class="card" id="go-no-go"></div>
+    </section>
+
+    <section class="page" id="recipes-page">
+      <div class="page-head">
+        <h2>Course Summary</h2>
+        <a href="#top" class="back">Back To Top</a>
+      </div>
+      <div class="grid" id="summary-grid"></div>
+    </section>
+
+    <section class="page" id="procurement-page">
+      <div class="page-head">
+        <h2>Order / Buy Plan</h2>
+        <a href="#top" class="back">Back To Top</a>
+      </div>
+      <table id="procurement-table"></table>
+    </section>
+
+    <section class="page" id="quantities-page">
+      <div class="page-head">
+        <h2>13-Cover Quantity Book</h2>
+        <a href="#top" class="back">Back To Top</a>
+      </div>
+      <div class="card" id="quantity-meta"></div>
+      <div id="quantity-course-tables"></div>
+      <table id="quantity-rollup-table"></table>
+    </section>
+
+    <section class="page" id="ops-controls-page">
+      <div class="page-head">
+        <h2>Program Manager Controls (No Allergen Matrix)</h2>
+        <a href="#top" class="back">Back To Top</a>
+      </div>
+      <table id="capacity-table"></table>
+      <table id="hold-sop-table"></table>
+      <table id="critical-path-table"></table>
+      <table id="tasting-gates-table"></table>
+      <table id="throughput-table"></table>
+      <table id="reset-table"></table>
+      <table id="gates-table"></table>
+      <table id="contingency-table"></table>
+      <div class="card" id="quantity-lock-card"></div>
+    </section>
+
+    <section class="page" id="house-setup-page">
+      <div class="page-head">
+        <h2>House Setup</h2>
+        <a href="#top" class="back">Back To Top</a>
+      </div>
+      <div class="house-setup-grid" id="house-setup-grid"></div>
+    </section>
+
+    <section class="page" id="cutlery-page">
+      <div class="page-head">
+        <h2>Cutlery + Serving Gear</h2>
+        <a href="#top" class="back">Back To Top</a>
+      </div>
+      <table id="cutlery-table"></table>
+      <table id="serve-by-course-table"></table>
+    </section>
+
+    <dialog id="sync-dialog" class="sync-dialog">
+      <div class="dialog-head">
+        <h2>Sync Snapshot</h2>
+        <button type="button" id="close-sync" class="popup-btn">Close</button>
+      </div>
+      <div class="sync-dialog-body" id="sync-dialog-body"></div>
+    </dialog>
+
+  </main>
+
+  <script src="data/meta.js"></script>
+  <script src="data/global-steps.js"></script>
+  <script src="data/courses.js"></script>
+  <script src="data/combined-steps.js"></script>
+  <script src="data/tasks.js"></script>
+  <script src="data/timeline.js"></script>
+  <script src="data/procurement.js"></script>
+  <script src="data/cutlery.js"></script>
+  <script src="data/quantities13.js"></script>
+  <script src="data/ops-controls.js"></script>
+  <script src="data/house-setup.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

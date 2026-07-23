@@ -1,0 +1,21 @@
+# .gitignore
+
+# Dependencies
+node_modules/
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs
+*.log
+npm-debug.log*
+
+# Sync snapshots (exported from phone — store separately or email; don't commit)
+supper-sync-*.json
+
+# Editor
+.vscode/
+*.swp
+*.swo
