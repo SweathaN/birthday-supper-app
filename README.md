@@ -22,12 +22,26 @@ It covers:
 
 ---
 
-## How to open on phone (iOS Safari)
+## How to open on phone (iOS Safari — same Wi-Fi as your PC)
 
-1. Open `index.html` via a local server or share via AirDrop / iCloud.
-   - Quickest local option: `python3 -m http.server 8080` from the project folder, then open `http://<your-mac-ip>:8080` on the phone.
-2. Tap the **Share** button → **Add to Home Screen**.
-3. The icon will open full-screen, offline-capable.
+1. **On your PC**, double-click `start.bat` (or run `node serve.mjs`).
+   You'll see output like:
+   ```
+   Local:   http://localhost:8080/
+   Phone:   http://192.168.1.9:8080/   (same Wi-Fi)
+   ```
+2. **First time only — allow the firewall:** Windows may pop up "Allow Node.js to communicate on private networks" → click **Allow**.
+   If your phone can't connect, open **PowerShell as Administrator** and run:
+   ```powershell
+   New-NetFirewallRule -DisplayName "Birthday Supper App (Node 8080)" -Direction Inbound -Protocol TCP -LocalPort 8080 -Action Allow -Profile Private
+   ```
+3. **On your iPhone** (connected to the same Wi-Fi), open Safari and go to the `http://<your-pc-ip>:8080/` URL shown above.
+4. Tap **Share** → **Add to Home Screen** → the app opens full-screen, works like a native app.
+
+**Note:** The server must be running on your PC for the phone to reach it. Data (edits) live in your phone's browser storage, so they persist between visits even when the PC is off. Use the **Sync** button to email a snapshot back to yourself so you can merge into the master files with `scripts/apply-sync.mjs`.
+
+### Why not host on the internet?
+Your Microsoft-managed GitHub account (EMU) blocks public repos and GitHub Pages, so free public hosting isn't available. This local-server approach keeps everything private and costs nothing.
 
 ---
 
