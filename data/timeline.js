@@ -30,7 +30,8 @@ window.PB_TIMELINE = [
   { stepId: "drink-base", courseId: "drink" },
   // Sat Morning-Afternoon
   { stepId: "c4-paneer-cut", courseId: "c4" },
-  { stepId: "combined-crystal-dough", courseId: "combined" },
+  { stepId: "c2-dough-mix", courseId: "c2" },
+  { stepId: "c6-dough-mix", courseId: "c6" },
   { stepId: "c1-topping-prep", courseId: "c1" },
   { stepId: "c5-relish", courseId: "c5" },
   { stepId: "c5-veg-garnish", courseId: "c5" },
