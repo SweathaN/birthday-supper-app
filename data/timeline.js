@@ -1,9 +1,11 @@
 window.PB_TIMELINE = [
-  // Fri Morning (passive soaks)
+  // Fri Morning (passive soaks + fresh perishable procurement)
   { stepId: "global-morning-soaks", courseId: "none" },
+  { stepId: "c1-coconut-procure", courseId: "c1" },
   // Fri 1:45 PM — kickoff
   { stepId: "procurement-check", courseId: "none" },
   // Fri 2:00–4:00 PM (Block 1: active prep)
+  { stepId: "c1-serving-dishes", courseId: "c1" },
   { stepId: "c5-avial-crema", courseId: "c5" },
   { stepId: "c5-pumpkin-mash", courseId: "c5" },
   { stepId: "c6-dome", courseId: "c6" },
@@ -18,6 +20,7 @@ window.PB_TIMELINE = [
   { stepId: "c3-podimas", courseId: "c3" },
   { stepId: "c2-fill-cook", courseId: "c2" },
   { stepId: "c5-adai-parbake", courseId: "c5" },
+  { stepId: "c5-test-bake", courseId: "c5" },
   { stepId: "c2-fill-portion", courseId: "c2" },
   { stepId: "c1-puree-cook", courseId: "c1" },
   { stepId: "c1-puree-blend", courseId: "c1" },
@@ -40,7 +43,9 @@ window.PB_TIMELINE = [
   { stepId: "c6-mint", courseId: "c6" },
   { stepId: "c2-shape", courseId: "c2" },
   // Sat Evening
-  { stepId: "c3-rice-dal-cook", courseId: "c3" },
+  { stepId: "c3-cook-rice", courseId: "c3" },
+  { stepId: "c3-cook-dal", courseId: "c3" },
+  { stepId: "c3-rice-dal-mix", courseId: "c3" },
   { stepId: "c3-reheat", courseId: "c3" },
   { stepId: "global-self-ready", courseId: "none" },
   { stepId: "drink-send", courseId: "drink" },

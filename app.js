@@ -833,13 +833,14 @@ function bindRecipeDialog(courseMap) {
 
 function renderProcurement(courseMap) {
   const table = byId("procurement-table");
-  table.innerHTML = `<thead><tr><th>Day</th><th>Course</th><th>Order / Buy Item</th></tr></thead><tbody></tbody>`;
+  table.innerHTML = `<thead><tr><th style="width:36px">✓</th><th>Day</th><th>Course</th><th>Order / Buy Item</th></tr></thead><tbody></tbody>`;
   const tbody = table.querySelector("tbody");
 
-  window.PB_PROCUREMENT.forEach(row => {
+  window.PB_PROCUREMENT.forEach((row, idx) => {
     const course = courseMap[row.courseId];
     const tr = el("tr", course ? course.textClass : "");
-    tr.innerHTML = `<td>${row.day}</td><td>${course ? course.label : row.courseId}</td><td>${row.item}</td>`;
+    const key = `proc-${idx}`;
+    tr.innerHTML = `<td style="text-align:center"><input type="checkbox" data-sync="${key}" class="proc-check" aria-label="Bought"></td><td>${row.day}</td><td>${course ? course.label : row.courseId}</td><td class="proc-item">${row.item}</td>`;
     tbody.appendChild(tr);
   });
 }

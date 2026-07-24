@@ -169,6 +169,19 @@ h3 { margin: 0 0 8px; font-size: 17px; }
   opacity: 0.75;
 }
 
+/* Procurement / shopping list: strike-through when bought */
+.proc-check {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+tr:has(.proc-check:checked) .proc-item,
+tr:has(.proc-check:checked) td:nth-child(2),
+tr:has(.proc-check:checked) td:nth-child(3) {
+  text-decoration: line-through;
+  opacity: 0.5;
+}
+
 .recipe-content {
   padding: 10px 12px 14px;
 }
