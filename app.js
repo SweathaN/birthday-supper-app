@@ -193,6 +193,7 @@ function initToolbar() {
 
   const editBtn = byId("toolbar-edit");
   const syncBtn = byId("toolbar-sync");
+  const shoppingSyncBtn = byId("toolbar-sync-shopping");
   const moreBtn = byId("toolbar-more");
   const menu = byId("toolbar-menu");
   const resetBtn = byId("reset-overrides-btn");
@@ -220,6 +221,16 @@ function initToolbar() {
 
   if (syncBtn) {
     syncBtn.addEventListener("click", handleSync);
+  }
+
+  if (shoppingSyncBtn) {
+    shoppingSyncBtn.addEventListener("click", handleShoppingSync);
+  }
+
+  const closeShoppingSyncBtn = byId("close-shopping-sync");
+  if (closeShoppingSyncBtn) {
+    const dlg = byId("shopping-sync-dialog");
+    closeShoppingSyncBtn.addEventListener("click", () => dlg && dlg.close());
   }
 
   if (moreBtn && menu) {
@@ -338,6 +349,138 @@ function handleSync() {
   doShare().then(shared => {
     if (!shared) openSyncFallbackDialog(json, filename);
   });
+}
+
+/* ── Shopping-only Sync (buy-* keys) ────────────────────────── */
+
+function buildShoppingSnapshot() {
+  const now = new Date();
+  const pad = n => String(n).padStart(2, "0");
+  const ts = `${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())}-${pad(now.getHours())}${pad(now.getMinutes())}`;
+  const fullState = getSyncState();
+  const shopping = {};
+  Object.keys(fullState).forEach(k => {
+    if (k.indexOf("buy-") === 0) shopping[k] = !!fullState[k];
+  });
+  return {
+    version: 1,
+    type: "shopping",
+    exportedAt: now.toISOString(),
+    shopping,
+    _filename: `supper-shopping-${ts}.json`
+  };
+}
+
+function applyShoppingSnapshot(json) {
+  let parsed;
+  try {
+    parsed = JSON.parse(json);
+  } catch (e) {
+    alert("Could not parse JSON. Please paste a valid shopping snapshot.");
+    return 0;
+  }
+  const incoming = parsed && parsed.shopping ? parsed.shopping : parsed;
+  if (!incoming || typeof incoming !== "object") {
+    alert("No shopping data found in that snapshot.");
+    return 0;
+  }
+  const state = getSyncState();
+  let count = 0;
+  Object.keys(incoming).forEach(k => {
+    if (k.indexOf("buy-") === 0) {
+      state[k] = !!incoming[k];
+      applySync(k, !!incoming[k], state);
+      count += 1;
+    }
+  });
+  setSyncState(state);
+  return count;
+}
+
+function handleShoppingSync() {
+  const snap = buildShoppingSnapshot();
+  const json = JSON.stringify(snap, null, 2);
+  const filename = snap._filename;
+  openShoppingSyncDialog(json, filename);
+}
+
+function openShoppingSyncDialog(json, filename) {
+  const dialog = byId("shopping-sync-dialog");
+  const body = byId("shopping-sync-dialog-body");
+  if (!dialog || !body) return;
+
+  const tickedCount = (json.match(/:\s*true/g) || []).length;
+  body.innerHTML = "";
+
+  const summary = el("p", "", `<strong>${tickedCount}</strong> shopping item${tickedCount === 1 ? "" : "s"} ticked on this device.`);
+  body.appendChild(summary);
+
+  const exportHead = el("h3", "", "Export &rarr; send to other device");
+  body.appendChild(exportHead);
+
+  const shareBtn = el("button", "popup-btn", "\u21AA Share / Send");
+  shareBtn.addEventListener("click", async () => {
+    const file = new File([json], filename, { type: "application/json" });
+    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+      try {
+        await navigator.share({ files: [file], title: "Shopping sync", text: "Shopping ticks" });
+        return;
+      } catch (err) {
+        if (err.name !== "AbortError") console.warn("Share failed:", err);
+      }
+    }
+    // Fallback: download
+    const blob = new Blob([json], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(() => { document.body.removeChild(a); URL.revokeObjectURL(url); }, 1000);
+  });
+  body.appendChild(shareBtn);
+
+  const copyBtn = el("button", "popup-btn", "\u29C0 Copy JSON");
+  copyBtn.addEventListener("click", () => {
+    navigator.clipboard.writeText(json).then(() => {
+      copyBtn.textContent = "\u2713 Copied!";
+      setTimeout(() => { copyBtn.textContent = "\u29C0 Copy JSON"; }, 2000);
+    }).catch(() => alert("Clipboard not available. Use Share instead."));
+  });
+  body.appendChild(copyBtn);
+
+  const preview = el("details", "sync-preview");
+  preview.innerHTML = `<summary>Show JSON</summary><pre style="max-height:180px;overflow:auto;font-size:11px;">${json.replace(/</g, "&lt;")}</pre>`;
+  body.appendChild(preview);
+
+  const importHead = el("h3", "", "Import &larr; paste from other device");
+  body.appendChild(importHead);
+
+  const helpP = el("p", "", "Paste a shopping snapshot JSON below. Existing ticks are preserved; incoming ticks are merged in.");
+  body.appendChild(helpP);
+
+  const ta = document.createElement("textarea");
+  ta.rows = 6;
+  ta.placeholder = "Paste JSON here…";
+  ta.style.width = "100%";
+  ta.style.fontFamily = "monospace";
+  ta.style.fontSize = "12px";
+  body.appendChild(ta);
+
+  const applyBtn = el("button", "popup-btn", "\u2713 Apply pasted ticks");
+  applyBtn.addEventListener("click", () => {
+    const text = ta.value.trim();
+    if (!text) { alert("Paste some JSON first."); return; }
+    const count = applyShoppingSnapshot(text);
+    if (count > 0) {
+      applyBtn.textContent = `\u2713 Applied ${count} tick${count === 1 ? "" : "s"}`;
+      setTimeout(() => { applyBtn.textContent = "\u2713 Apply pasted ticks"; ta.value = ""; }, 2500);
+    }
+  });
+  body.appendChild(applyBtn);
+
+  if (typeof dialog.showModal === "function") dialog.showModal();
 }
 
 function openSyncFallbackDialog(json, filename) {

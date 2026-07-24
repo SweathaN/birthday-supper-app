@@ -12,6 +12,7 @@
     <div class="toolbar" id="toolbar">
       <button type="button" class="tool-btn" id="toolbar-edit">&#9998; Edit</button>
       <button type="button" class="tool-btn" id="toolbar-sync">&#11014; Sync</button>
+      <button type="button" class="tool-btn" id="toolbar-sync-shopping">&#128722; Sync Shopping</button>
       <span class="dirty-pill" id="dirty-pill" style="display:none"></span>
       <div class="toolbar-menu-wrap">
         <button type="button" class="tool-btn" id="toolbar-more" aria-label="More options">&#8943;</button>
@@ -154,6 +155,14 @@
         <button type="button" id="close-sync" class="popup-btn">Close</button>
       </div>
       <div class="sync-dialog-body" id="sync-dialog-body"></div>
+    </dialog>
+
+    <dialog id="shopping-sync-dialog" class="sync-dialog">
+      <div class="dialog-head">
+        <h2>&#128722; Sync Shopping Ticks</h2>
+        <button type="button" id="close-shopping-sync" class="popup-btn">Close</button>
+      </div>
+      <div class="sync-dialog-body" id="shopping-sync-dialog-body"></div>
     </dialog>
 
   </main>
