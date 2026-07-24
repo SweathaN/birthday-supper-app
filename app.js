@@ -831,16 +831,35 @@ function bindRecipeDialog(courseMap) {
   });
 }
 
+function findBuyIdForIngredient(ingredientName) {
+  if (!ingredientName) return null;
+  const name = String(ingredientName).toLowerCase();
+  const rows = window.PB_PROCUREMENT || [];
+  // Longest-alias match wins, so "flaky sea salt" beats "salt" etc.
+  let best = null;
+  let bestLen = 0;
+  for (const row of rows) {
+    const aliases = row.aliases || [row.item];
+    for (const a of aliases) {
+      const al = String(a).toLowerCase();
+      if (al && name.includes(al) && al.length > bestLen) {
+        best = row.id;
+        bestLen = al.length;
+      }
+    }
+  }
+  return best;
+}
+
 function renderProcurement(courseMap) {
   const table = byId("procurement-table");
-  table.innerHTML = `<thead><tr><th style="width:36px">✓</th><th>Day</th><th>Course</th><th>Order / Buy Item</th></tr></thead><tbody></tbody>`;
+  table.innerHTML = `<thead><tr><th style="width:36px">✓</th><th>Day</th><th>Category</th><th>Item</th><th>Qty</th><th>Used in</th></tr></thead><tbody></tbody>`;
   const tbody = table.querySelector("tbody");
 
-  window.PB_PROCUREMENT.forEach((row, idx) => {
-    const course = courseMap[row.courseId];
-    const tr = el("tr", course ? course.textClass : "");
-    const key = `proc-${idx}`;
-    tr.innerHTML = `<td style="text-align:center"><input type="checkbox" data-sync="${key}" class="proc-check" aria-label="Bought"></td><td>${row.day}</td><td>${course ? course.label : row.courseId}</td><td class="proc-item">${row.item}</td>`;
+  window.PB_PROCUREMENT.forEach(row => {
+    const tr = el("tr");
+    const key = `buy-${row.id}`;
+    tr.innerHTML = `<td style="text-align:center"><input type="checkbox" data-sync="${key}" class="proc-check" aria-label="Bought"></td><td>${row.day}</td><td>${row.category || ""}</td><td class="proc-item"><strong>${row.item}</strong></td><td>${row.qty || ""}</td><td class="proc-used">${row.usedIn || ""}</td>`;
     tbody.appendChild(tr);
   });
 }
@@ -891,14 +910,16 @@ function renderQuantities() {
     const table = el("table", "qty-course");
     table.innerHTML = `
       <caption style="caption-side:top;text-align:left;padding:8px 2px;font-weight:700;">${course.courseLabel} - ${course.confidenceNote}</caption>
-      <thead><tr><th>Ingredient</th><th>Min</th><th>Max</th><th>Unit</th><th>Confidence</th></tr></thead>
+      <thead><tr><th style="width:32px">✓</th><th>Ingredient</th><th>Min</th><th>Max</th><th>Unit</th><th>Confidence</th></tr></thead>
       <tbody></tbody>
     `;
 
     const tbody = table.querySelector("tbody");
     course.items.forEach(item => {
       const tr = el("tr");
-      tr.innerHTML = `<td>${item.ingredient}</td><td>${item.min}</td><td>${item.max}</td><td>${item.unit}</td><td>${item.confidence}</td>`;
+      const buyId = findBuyIdForIngredient(item.ingredient);
+      const chk = buyId ? `<input type="checkbox" data-sync="buy-${buyId}" class="proc-check" aria-label="Bought">` : "";
+      tr.innerHTML = `<td style="text-align:center">${chk}</td><td class="proc-item">${item.ingredient}</td><td>${item.min}</td><td>${item.max}</td><td>${item.unit}</td><td>${item.confidence}</td>`;
       tbody.appendChild(tr);
 
       const key = `${normalizeIngredientName(item.ingredient)}__${item.unit}`;
@@ -913,14 +934,16 @@ function renderQuantities() {
     courseTables.appendChild(table);
   });
 
-  rollupTable.innerHTML = `<thead><tr><th>Consolidated Ingredient</th><th>Total Min</th><th>Total Max</th><th>Unit</th><th>Confidence Mix</th></tr></thead><tbody></tbody>`;
+  rollupTable.innerHTML = `<thead><tr><th style="width:32px">✓</th><th>Consolidated Ingredient</th><th>Total Min</th><th>Total Max</th><th>Unit</th><th>Confidence Mix</th></tr></thead><tbody></tbody>`;
   const rb = rollupTable.querySelector("tbody");
   Object.values(rollup)
     .sort((a, b) => a.ingredient.localeCompare(b.ingredient))
     .forEach(item => {
       const confidenceMix = Array.from(item.confidenceSet).join(", ");
       const tr = el("tr");
-      tr.innerHTML = `<td>${item.ingredient}</td><td>${item.min.toFixed(2).replace(/\.00$/, "")}</td><td>${item.max.toFixed(2).replace(/\.00$/, "")}</td><td>${item.unit}</td><td>${confidenceMix}</td>`;
+      const buyId = findBuyIdForIngredient(item.ingredient);
+      const chk = buyId ? `<input type="checkbox" data-sync="buy-${buyId}" class="proc-check" aria-label="Bought">` : "";
+      tr.innerHTML = `<td style="text-align:center">${chk}</td><td class="proc-item">${item.ingredient}</td><td>${item.min.toFixed(2).replace(/\.00$/, "")}</td><td>${item.max.toFixed(2).replace(/\.00$/, "")}</td><td>${item.unit}</td><td>${confidenceMix}</td>`;
       rb.appendChild(tr);
     });
 }
